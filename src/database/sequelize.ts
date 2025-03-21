@@ -1,18 +1,8 @@
-import {Sequelize} from "sequelize-typescript";
+import {Sequelize} from "sequelize";
 
-// Postgres defaults to port 5432
-const sequelize = new Sequelize({
-    database: process.env.DB_DATABASE,
+const dbConnection = new Sequelize('sequelize_db', 'express_user', 'express_password', {
     dialect: "postgres",
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    models: [__dirname + "/models"]
+    host: "localhost",
 })
 
-// const initDB = async () => {
-//     await sequelize.authenticate()
-//     await sequelize.sync({alter: true})
-// }
-
-export default sequelize;
+export default dbConnection;

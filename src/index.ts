@@ -1,5 +1,8 @@
-import express, { Express, Request, Response } from "express";
+import express, {Express, Request, Response} from "express";
 import dotenv from "dotenv";
+import dbConnection from "./database/sequelize";
+
+import "./database/models/Task"
 
 dotenv.config();
 
@@ -10,8 +13,21 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Express + TypeScript Server");
 });
 
-// initDB().then(r => {console.log('DB initiated')})
+const start = async () => {
+    try {
+        await dbConnection.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
 
-app.listen(port, () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
-});
+    await dbConnection.sync({alter: true})
+        .then(() => console.log('Database synced'))
+        .catch((error) => console.log('Unable to connect to DB', error)); // Synchronizes the database with the defined models
+
+    app.listen(port, () => {
+        console.log(`[server]: Server is running at http://localhost:${port}`);
+    });
+}
+
+start();

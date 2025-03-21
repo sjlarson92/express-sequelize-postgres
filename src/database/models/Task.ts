@@ -1,14 +1,10 @@
-import {Model, DataTypes} from "sequelize";
-import {sequelize} from "../sequelize";
+import {Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes} from "sequelize";
+import dbConnection from "../sequelize";
 
-type TaskAttributes = {
-    id: number;
-    name: string;
-}
-
-class Task extends Model<TaskAttributes> {
-    declare id: string;
+class Task extends Model<InferAttributes<Task>, InferCreationAttributes<Task>> {
+    declare id: CreationOptional<number>;
     declare name: string;
+    declare isCompleted: boolean;
 }
 
 Task.init(
@@ -19,15 +15,19 @@ Task.init(
             primaryKey: true
         },
         name: {
-            type: DataTypes.STRING(128),
+            type: new DataTypes.STRING(128),
+            allowNull: false
+        },
+        isCompleted: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
             allowNull: false
         }
     },
     {
         tableName: 'task',
-        sequelize
+        sequelize: dbConnection
     }
 )
 
 export default Task;
-
