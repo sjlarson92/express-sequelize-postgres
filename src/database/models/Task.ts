@@ -4,7 +4,7 @@ import dbConnection from "../sequelize";
 class Task extends Model<InferAttributes<Task>, InferCreationAttributes<Task>> {
     declare id: CreationOptional<number>;
     declare name: string;
-    declare isCompleted: boolean;
+    declare isCompleted: CreationOptional<boolean>;
 }
 
 Task.init(
