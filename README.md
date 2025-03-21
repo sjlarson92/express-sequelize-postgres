@@ -10,16 +10,91 @@ Express node app using Sequelize ORM and PostgreSQL
 `npm i pg pg-hstore`
 
 - Create `sequelize.ts` file in root of project and initialize Sequelize instance
-`const sequelize = new Sequelize('postgres://user:password@localhost:PORT/db')`
+```ts
+const dbConnection = new Sequelize(DB, DB_USER, DB_USER, {
+  dialect: "postgres",
+  host: DB_HOST,
+})
+
+export default dbConnection;
+```
 
 - Create model for tables
-
-- By default, when the table name is not given, Sequelize automatically pluralizes the model name and uses that as the table name. 
-  - This can be configured specifically per table or globally to match the model by changing instance of Sequelize:
 ```ts
-const sequelize = new Sequelize('DATABASE_URL', {
-  define: {
-    freezeTableName: true,
-  },
-});
+import {Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes} from "sequelize";
+import dbConnection from "../dbConnectionFile";
+
+class Task extends Model<InferAttributes<Task>, InferCreationAttributes<Task>> {
+    // declare needed for typesecript so field is not ignored in type
+    declare id: CreationOptional<number>;
+    declare name: string;
+    declare isCompleted: boolean;
+}
+
+Task.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        name: {
+            type: new DataTypes.STRING(128),
+            allowNull: false
+        },
+        isCompleted: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            allowNull: false
+        }
+    },
+    {
+        /*
+          By default Sequelize automatically pluralizes the model name and uses that as the table name. 
+          This can be configured specifically per table or globally
+         */
+        tableName: 'task',
+        sequelize: dbConnection
+    }
+)
+
+export default Task;
 ```
+
+- Import models in index.ts and call sync in start() this will generate and alter tables to match models
+```ts
+import express, {Express, Request, Response} from "express";
+import dotenv from "dotenv";
+import dbConnection from "./database/sequelize";
+
+import "./database/models/Task"
+
+dotenv.config();
+
+const app: Express = express();
+const port = process.env.PORT || 3000;
+
+app.get("/", (req: Request, res: Response) => {
+    res.send("Express + TypeScript Server");
+});
+
+const start = async () => {
+    try {
+        await dbConnection.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+
+    await dbConnection.sync({alter: true})
+        .then(() => console.log('Database synced'))
+        .catch((error) => console.log('Unable to connect to DB', error)); // Synchronizes the database with the defined models
+
+    app.listen(port, () => {
+        console.log(`[server]: Server is running at http://localhost:${port}`);
+    });
+}
+
+start();
+```
+
