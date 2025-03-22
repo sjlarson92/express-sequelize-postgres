@@ -24,7 +24,7 @@ app.get("/", (req: Request, res: Response) => {
 const start = async () => {
     try {
         await dbConnection.authenticate();
-        console.log('Connection has been established successfully.');
+        console.log('Connection to the database has been established successfully.');
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }

@@ -1,40 +1,17 @@
-import {Optional} from 'sequelize';
-import {Table, Model} from 'sequelize-typescript';
+import {Table, Model, Column} from 'sequelize-typescript';
 
-interface TaskAttributes {
-    id: number;
-    name: string;
-    isCompleted: boolean;
+/**
+ * overwrite default plural table name and
+ * stop auto generation of createdAt and updatedAt fields
+ */
+@Table({tableName: 'task', timestamps: false})
+class Task extends Model {
+
+    @Column
+    declare name: string;
+
+    @Column({field: 'is_completed'})
+    declare isCompleted: boolean;
 }
-
-interface TaskCreationAttributes extends Optional<TaskAttributes, 'id'> {
-}
-
-@Table
-class Task extends Model<TaskAttributes, TaskCreationAttributes> {
-}
-
-// Task.init(
-//     {
-//         id: {
-//             type: DataTypes.INTEGER,
-//             autoIncrement: true,
-//             primaryKey: true
-//         },
-//         name: {
-//             type: new DataTypes.STRING(128),
-//             allowNull: false
-//         },
-//         isCompleted: {
-//             type: DataTypes.BOOLEAN,
-//             defaultValue: false,
-//             allowNull: false
-//         }
-//     },
-//     {
-//         tableName: 'task',
-//         sequelize: dbConnection
-//     }
-// )
 
 export default Task;

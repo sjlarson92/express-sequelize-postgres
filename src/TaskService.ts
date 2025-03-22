@@ -6,19 +6,26 @@ type TaskRequest = {
     isCompleted: boolean;
 }
 
+export const getTasks = async (req: Request, res: Response) => {
+    console.log('Getting all tasks!')
+
+    const tasks = await Task.findAll()
+
+    res.send(tasks)
+}
+
 export const createTask = async (req: Request<{}, {}, TaskRequest>, res: Response) => {
-    console.log('Creating Task!', req)
-    const {name} = req.body
+    console.log('Creating Task!')
+    const {name, isCompleted} = req.body
 
     /*
     create method combines build and save and builds instance and saves it to DB
      */
-    const newTask = Task.create({
-        name: name,
-        isCompleted: false
+    const newTask = await Task.create({
+        name,
+        isCompleted
     })
 
-    res.send({message: 'TaskModel created', data: newTask})
-
-
+    console.log(`Created Task: ${newTask}`)
+    res.send(newTask)
 }
