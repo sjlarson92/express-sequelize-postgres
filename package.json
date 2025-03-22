@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/sjlarson92/express-sequelize-postgres#readme",
   "dependencies": {
+    "@ariga/ts-atlas-provider-sequelize": "^0.2.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "pg": "^8.14.1",
