@@ -1,14 +1,19 @@
 import express, {Express, Request, Response} from "express";
 import dotenv from "dotenv";
-import dbConnection from "./database/sequelize";
+import dbConnection from "./sequelize";
 
-import "./database/models/Task"
+import "./database/models/Task.model"
 import taskRouter from "./TaskRoute";
 
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
+
+/**
+ * built in middleware to handle json data. This is needed to read json
+ */
+app.use(express.json())
 
 app.use('/api/tasks', taskRouter)
 

@@ -24,14 +24,14 @@ export default dbConnection;
 import {Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes} from "sequelize";
 import dbConnection from "../dbConnectionFile";
 
-class Task extends Model<InferAttributes<Task>, InferCreationAttributes<Task>> {
+class TaskModel extends Model<InferAttributes<TaskModel>, InferCreationAttributes<TaskModel>> {
     // declare needed for typesecript so field is not ignored in type
     declare id: CreationOptional<number>;
     declare name: string;
     declare isCompleted: boolean;
 }
 
-Task.init(
+TaskModel.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -58,21 +58,28 @@ Task.init(
     }
 )
 
-export default Task;
+export default TaskModel;
 ```
 
 - Import models in index.ts and call sync in start() this will generate and alter tables to match models
+- Add `app.use(express.json())` to ensure app can read json data
+
 ```ts
 import express, {Express, Request, Response} from "express";
 import dotenv from "dotenv";
 import dbConnection from "./database/sequelize";
 
-import "./database/models/Task"
+import "./database/models/TaskModel"
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+
+/**
+ * built in middleware to handle json data. This is needed to read json
+ */
+app.use(express.json())
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Express + TypeScript Server");
@@ -86,7 +93,7 @@ const start = async () => {
         console.error('Unable to connect to the database:', error);
     }
 
-    await dbConnection.sync({alter: true})
+    await dbConnection.sync({alter: true}) // we don't want to be syncing data when running app. use migrations instead
         .then(() => console.log('Database synced'))
         .catch((error) => console.log('Unable to connect to DB', error)); // Synchronizes the database with the defined models
 
