@@ -1,4 +1,4 @@
-h1:pEXYxVFFe7ZG7idwab9/npUkUNnerlwnK2AtdNsqeRY=
-20250322230415_create-task-table.sql h1:xqi1PC83LwRyrcTfDlM+V1MRuXPRmnAp4juonlw9FNE=
-20250322231128_add_priority_column.sql h1:PlR69jyXB2bKgclenBUwvLKN3Uycp71Pps87ynv4wfs=
-20250322231413_change_priority_type.sql h1:pvfsXfuhJ5RHAmIfOkKwQ2ydOavlnbeEJ3h83eWU+/E=
+h1:l3CFuMHbYALqEom2S/VstkVATEkjxEfru5Scnn8Wp5w=
+20250322235046_initial_db.sql h1:n6EZ5+ZGxEh+wKZunIJdLiQ8/CHjMqNLUL0P5KrxJHQ=
+20250322235108_changed_col_type.sql h1:2lK/43XnCXvGvahWwCloD+HgnGqvwUfYaaCEcYXecmw=
+20250322235613_added-test-col-2.sql h1:5cJiVYQ7gmRtopSIluMMFXIy6DoZ/1T2jiIwYIqMfDc=
