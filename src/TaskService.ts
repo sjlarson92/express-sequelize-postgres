@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import Task from "./database/models/Task.model";
+import Task from "./models/Task.model";
 
 type TaskRequest = {
     name: string;

@@ -1,8 +1,8 @@
 import express, {Express, Request, Response} from "express";
 import dotenv from "dotenv";
-import dbConnection from "./sequelize";
+import dbConnection from "../sequelize";
 
-import "./database/models/Task.model"
+import "./models/Task.model"
 import taskRouter from "./TaskRoute";
 
 dotenv.config();
