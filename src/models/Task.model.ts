@@ -17,7 +17,10 @@ class Task extends Model {
     declare isCompleted: boolean;
 
     @Column
-    declare priority: string;
+    declare test_column: string;
+
+    @Column
+    declare test_column2: string;
 }
 
 export default Task;
