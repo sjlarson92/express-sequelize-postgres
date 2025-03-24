@@ -15,6 +15,16 @@ export const getTasks = async (req: Request, res: Response) => {
     res.send(tasks)
 }
 
+export const getTaskById = async (req: Request, res: Response) => {
+    const {id} = req.params
+    console.log(`Getting task with id: ${id}`)
+
+    const task = await Task.findOne({where: {id}})
+
+    res.send(task)
+
+}
+
 export const createTask = async (req: Request<{}, {}, TaskRequest>, res: Response) => {
     console.log('Creating Task!')
     const {name, isCompleted} = req.body

@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {createTask, getTasks} from "./TaskService";
+import {createTask, getTaskById, getTasks} from "./TaskService";
 
 const taskRouter = Router()
 
@@ -8,6 +8,9 @@ taskRouter.route('/')
     .get(getTasks)
 
 taskRouter.route('/:id')
+    .get(getTaskById)
+    .put()
+    .delete()
 
 export default taskRouter;
 

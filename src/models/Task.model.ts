@@ -15,12 +15,6 @@ class Task extends Model {
     // Column names are not auto translated in regard to camel case
     @Column({field: 'is_completed'})
     declare isCompleted: boolean;
-
-    @Column
-    declare test_column: string;
-
-    @Column
-    declare test_column2: string;
 }
 
 export default Task;
