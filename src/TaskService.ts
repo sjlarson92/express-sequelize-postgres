@@ -9,8 +9,14 @@ type TaskRequest = {
 export const getTasks = async (req: Request, res: Response) => {
     console.log('Getting all tasks!')
 
-    // Call to db returns promise so it needs to be awaited!!
-    const tasks = await Task.findAll()
+    /*
+     Call to db returns promise so it needs to be awaited!!
+     Passing an array of [attribute, direction] to the field order field return be ordered
+     and is set to ascending (ASC) by default
+     */
+    const tasks = await Task.findAll({
+        order: [['id', 'ASC']]
+    })
 
     res.send(tasks)
 }
@@ -41,9 +47,33 @@ export const createTask = async (req: Request<{}, {}, TaskRequest>, res: Respons
     res.send(newTask)
 }
 
-/*
- todo GetById, DeleteById, UpdateById
+export const updateTaskById = (req: Request<{ id: string }, {}, TaskRequest>, res: Response) => {
+    const {id} = req.params
+    const {name, isCompleted} = req.body
+    console.log(`Updating Task with id: ${id}`)
 
+    const updatedTask = Task.update(
+        {
+            name,
+            isCompleted
+        },
+        {where: {id},},
+    )
+
+    res.send(updatedTask)
+}
+
+export const deleteTaskById = async (req: Request, res: Response) => {
+    const {id} = req.params
+
+    console.log(`Deleting Task with id: ${id}`)
+
+    await Task.destroy({where: {id}})
+
+    res.send(`Successfully deleted Task with id: ${id}`)
+}
+
+/*
 
  todo what migration tool do people use for node/sequelize?
  todo create migration (3) (sequelize cli) search: node sequelize database migration
